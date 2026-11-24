@@ -6,6 +6,8 @@ from health_bar import HealthBar
 from enemy import Enemy
 from spikes import Spikes
 from goal import Goal
+from tree import Tree
+from cloud import Cloud
 
 pygame.init()
 
@@ -40,6 +42,27 @@ spikes = [
     for left, right in zip(platforms[1:], platforms[2:])
 ]
 
+# Fill the sky with clouds.
+clouds = [
+    Cloud(75, 105, 145),
+    Cloud(330, 65, 185),
+    Cloud(645, 135, 130),
+    Cloud(875, 80, 175),
+    Cloud(1165, 115, 155),
+    Cloud(1370, 55, 165),
+]
+
+# Fill the background with trees.
+trees = [
+    Tree(x, platforms[0].rect.top, height * 115 // 100)
+    for x, height in (
+        (40, 165), (205, 200), (385, 155), (555, 215), (740, 175),
+        (910, 195), (1090, 155), (1255, 205), (1440, 170), (1620, 215),
+        (1790, 180),
+    )
+]
+
+# Place the goal at the end of a level.
 goal = Goal(LEVEL_WIDTH - 125, platforms[0].rect.top - 20, 100, 20)
 # Keep the goal separate from the floating platforms used to place hazards.
 landing_platforms = [goal] + platforms
@@ -121,6 +144,12 @@ while running:
         level_won = goal.update(player, previous_player_rect)
 
     screen.fill((100, 180, 255)) # Sky Blue Color
+
+    for cloud in clouds:
+        cloud.draw(screen, camera)
+
+    for tree in trees:
+        tree.draw(screen, camera)
 
     for platform in platforms:
         platform.draw(screen, camera)

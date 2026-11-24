@@ -75,7 +75,7 @@ class Player:
                     self.velocity_y = 0
                     self.on_ground = True
 
-    #Makes the player jump
+    # Makes the player jump
     def jump(self):
         if self.on_ground:
             self.velocity_y = -self.jump_strength
@@ -98,12 +98,22 @@ class Player:
                 self.on_ground = True
                 break
 
-    # Player is drawn as a red rectangle (Placeholder)
+    # Draws the player as a white stick figure
     def draw(self, screen, camera):
         draw_rect = self.rect.move(-camera.x, 0)
+        center_x = draw_rect.centerx
+        top = draw_rect.top
+        white = (255, 255, 255)
+        stroke = 4
 
-        pygame.draw.rect(
-            screen,
-            (255, 0, 0), # Red Color
-            draw_rect
-        )
+        neck = (center_x, top + 22)
+        shoulders = (center_x, top + 30)
+        hips = (center_x, top + 46)
+        feet_y = draw_rect.bottom - 1
+
+        pygame.draw.circle(screen, white, (center_x, top + 11), 12)
+        pygame.draw.line(screen, white, neck, hips, stroke)
+        pygame.draw.line(screen, white, shoulders, (center_x - 19, top + 38), stroke)
+        pygame.draw.line(screen, white, shoulders, (center_x + 19, top + 38), stroke)
+        pygame.draw.line(screen, white, hips, (center_x - 14, feet_y), stroke)
+        pygame.draw.line(screen, white, hips, (center_x + 14, feet_y), stroke)
